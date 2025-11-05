@@ -1,0 +1,45 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Use the built-in node debugger
+      "type": "node",
+      // Starts a new program, as opposed to attaching to an existing one
+      "request": "launch",
+      "name": "Debug Launcher",
+      // Arguments passed to Node.js before the program runs.
+      // (Registers ts-node to run TypeScript files directly)
+      "runtimeArgs": ["-r", "ts-node/register"],
+      // The program to debug
+      "program": "${workspaceFolder}/test/launcher.ts",
+      // Environment variables to set for the program
+      "env": {
+        // AWS_REGION for AWS SDK calls
+        "AWS_REGION": "eu-west-1"
+      },
+      // Where output appears - in the VSCode integrated terminal
+      "console": "integratedTerminal",
+      // Enabling source maps allows setting breakpoints in .ts files and seeing the original source code
+      "sourceMaps": true,
+      // Skip Node.js internal code, eg. when stepping into require()
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      // Debug the currently open file
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Current File",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "program": "${file}",
+      "env": {
+        "AWS_REGION": "eu-west-1"
+      },
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
