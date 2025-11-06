@@ -1,4 +1,7 @@
-@url = https://4i0zzvsta9.execute-api.eu-west-1.amazonaws.com/prod
+@baseUrl = https://ci3dw5qfp1.execute-api.eu-west-1.amazonaws.com/prod
 
-GET {{url}}/spaces
+GET {{baseUrl}}/spaces
+###
+
+POST {{baseUrl}}/spaces
 ###
