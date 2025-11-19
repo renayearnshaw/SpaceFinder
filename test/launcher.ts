@@ -1,4 +1,10 @@
-import { handler } from "../src/services/spaces";
+import { handler } from "../src/services/handler";
 
 // Run the lambda function locally so that we can debug it
-handler({} as any, {} as any);
+handler(
+  {
+    httpMethod: "POST",
+    body: JSON.stringify({ location: "Paris" }),
+  } as any,
+  {} as any
+);

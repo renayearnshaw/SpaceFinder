@@ -1,7 +1,12 @@
-@baseUrl = https://ci3dw5qfp1.execute-api.eu-west-1.amazonaws.com/prod
+@baseUrl = https://01bz3ihvx3.execute-api.eu-west-1.amazonaws.com/prod/
 
 GET {{baseUrl}}/spaces
 ###
 
 POST {{baseUrl}}/spaces
+content-Type: application/json
+
+{
+    "location": "Berlin"
+}
 ###

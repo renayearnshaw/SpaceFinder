@@ -18,7 +18,8 @@
       // Environment variables to set for the program
       "env": {
         // AWS_REGION for AWS SDK calls
-        "AWS_REGION": "eu-west-1"
+        "AWS_REGION": "eu-west-1",
+        "TABLE_NAME": "SpaceTable-06b6e52d7889"
       },
       // Where output appears - in the VSCode integrated terminal
       "console": "integratedTerminal",
