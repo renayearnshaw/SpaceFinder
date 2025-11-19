@@ -11,8 +11,11 @@
       "request": "launch",
       "name": "Debug Launcher",
       // Arguments passed to Node.js before the program runs.
-      // (Registers ts-node to run TypeScript files directly)
-      "runtimeArgs": ["-r", "ts-node/register"],
+      // (Uses ts-node/esm loader to run TypeScript files directly with ES module support)
+      "runtimeArgs": [
+        "--import",
+        "data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));"
+      ],
       // The program to debug
       "program": "${workspaceFolder}/test/launcher.ts",
       // Environment variables to set for the program
@@ -33,7 +36,12 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Current File",
-      "runtimeArgs": ["-r", "ts-node/register"],
+      // Arguments passed to Node.js before the program runs.
+      // (Uses ts-node/esm loader to run TypeScript files directly with ES module support)
+      "runtimeArgs": [
+        "--import",
+        "data:text/javascript,import { register } from 'node:module'; import { pathToFileURL } from 'node:url'; register('ts-node/esm', pathToFileURL('./'));"
+      ],
       "program": "${file}",
       "env": {
         "AWS_REGION": "eu-west-1"
