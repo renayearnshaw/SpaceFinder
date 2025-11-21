@@ -4,7 +4,7 @@ import {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
-import { postSpaces } from "./postSpaces.js";
+import { postSpaces } from "./postSpaces";
 
 // The DB client is a module-level variable. It lives in the execution evironment, outside the handler.
 // It is intialised on a cold start, and persists across warm starts.
