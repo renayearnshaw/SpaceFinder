@@ -28,7 +28,7 @@ export class LambdaStack extends Stack {
 
     spacesLambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ['dynamodb:PutItem'],
+      actions: ['dynamodb:PutItem', 'dynamodb:Scan'],
       resources: [props.spacesTable.tableArn],
     }));
 

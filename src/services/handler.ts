@@ -5,6 +5,7 @@ import {
   Context,
 } from "aws-lambda";
 import { postSpaces } from "./postSpaces";
+import { getSpaces } from "./getSpaces";
 
 // The DB client is a module-level variable. It lives in the execution evironment, outside the handler.
 // It is intialised on a cold start, and persists across warm starts.
@@ -19,10 +20,7 @@ export async function handler(
       case "POST":
         return postSpaces(event, dbClient);
       case "GET":
-        return {
-          statusCode: 200,
-          body: JSON.stringify(`Received request with method: GET`),
-        };
+        return getSpaces(event, dbClient);
       default:
         return {
           statusCode: 400,
