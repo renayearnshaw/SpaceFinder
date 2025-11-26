@@ -3,6 +3,9 @@
 GET {{baseUrl}}/spaces
 ###
 
+GET {{baseUrl}}/spaces?id=6745f750-fa77-4cac-be4f-614fe6f25920
+###
+
 POST {{baseUrl}}/spaces
 content-Type: application/json
 

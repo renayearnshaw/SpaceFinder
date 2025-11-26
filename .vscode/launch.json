@@ -36,7 +36,8 @@
       "runtimeArgs": ["-r", "ts-node/register"],
       "program": "${file}",
       "env": {
-        "AWS_REGION": "eu-west-1"
+        "AWS_REGION": "eu-west-1",
+        "TABLE_NAME": "SpaceTable-06b6e52d7889"
       },
       "console": "integratedTerminal",
       "sourceMaps": true,
