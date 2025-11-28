@@ -1,27 +1,21 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { randomUUID } from "crypto";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export async function postSpaces(
   event: APIGatewayProxyEvent,
-  dbClient: DynamoDBClient
+  dbDocumentClient: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> {
   const randomId = randomUUID();
 
   try {
     const item = JSON.parse(event.body!);
-    const command = new PutItemCommand({
+    item.id = randomId;
+    const command = new PutCommand({
       TableName: process.env.TABLE_NAME,
-      Item: {
-        id: {
-          S: randomId,
-        },
-        location: {
-          S: item.location,
-        },
-      },
+      Item: item,
     });
-    const result = await dbClient.send(command);
+    const result = await dbDocumentClient.send(command);
     console.log(result);
     return {
       statusCode: 201,

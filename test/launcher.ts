@@ -9,8 +9,11 @@ process.env.TABLE_NAME = "SpaceTable-06b6e52d7889";
 handler(
   {
     httpMethod: "GET",
+    // body: JSON.stringify({
+    //   location: "Birmingham",
+    // }),
     queryStringParameters: {
-      id: "d07663b0-cd76-4fcb-aad9-1c477bdf6633",
+      id: "28b96b86-7147-460c-9e51-c643d21b7d7b",
     },
   } as any,
   {} as any

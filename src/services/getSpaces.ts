@@ -1,32 +1,31 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import {
-  DynamoDBClient,
-  GetItemCommand,
+  DynamoDBDocumentClient,
+  GetCommand,
   ScanCommand,
-} from "@aws-sdk/client-dynamodb";
+} from "@aws-sdk/lib-dynamodb";
 
 export async function getSpaces(
   event: APIGatewayProxyEvent,
-  dbClient: DynamoDBClient
+  dbDocumentClient: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> {
   try {
-
     if (event.queryStringParameters) {
       const id = event.queryStringParameters.id;
       if (id) {
-        const command = new GetItemCommand({
+        const command = new GetCommand({
           TableName: process.env.TABLE_NAME,
           Key: {
-            'id': { S: id},
+            id: id,
           },
         });
-        const result = await dbClient.send(command);
+        const result = await dbDocumentClient.send(command);
         if (result.Item) {
           console.log(result.Item);
           return {
             statusCode: 200,
             body: JSON.stringify(result.Item),
-          }
+          };
         } else {
           return {
             statusCode: 404,
@@ -44,7 +43,7 @@ export async function getSpaces(
     const command = new ScanCommand({
       TableName: process.env.TABLE_NAME,
     });
-    const result = await dbClient.send(command);
+    const result = await dbDocumentClient.send(command);
     console.log(result.Items);
     return {
       statusCode: 200,

@@ -6,10 +6,11 @@ import {
 } from "aws-lambda";
 import { postSpaces } from "./postSpaces";
 import { getSpaces } from "./getSpaces";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 // The DB client is a module-level variable. It lives in the execution evironment, outside the handler.
 // It is intialised on a cold start, and persists across warm starts.
-const dbClient = new DynamoDBClient({}); // initialized once per environment
+const dbDocumentClient = DynamoDBDocumentClient.from(new DynamoDBClient({})); // initialized once per environment
 
 export async function handler(
   event: APIGatewayProxyEvent,
@@ -18,9 +19,9 @@ export async function handler(
   try {
     switch (event.httpMethod) {
       case "POST":
-        return postSpaces(event, dbClient);
+        return postSpaces(event, dbDocumentClient);
       case "GET":
-        return getSpaces(event, dbClient);
+        return getSpaces(event, dbDocumentClient);
       default:
         return {
           statusCode: 400,

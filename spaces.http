@@ -3,13 +3,13 @@
 GET {{baseUrl}}/spaces
 ###
 
-GET {{baseUrl}}/spaces?id=6745f750-fa77-4cac-be4f-614fe6f25920
+GET {{baseUrl}}/spaces?id=28b96b86-7147-460c-9e51-c643d21b7d7b
 ###
 
 POST {{baseUrl}}/spaces
 content-Type: application/json
 
 {
-    "location": "Berlin"
+    "location": "Tokyo"
 }
 ###
