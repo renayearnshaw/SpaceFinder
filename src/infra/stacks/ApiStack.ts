@@ -14,8 +14,9 @@ export class ApiStack extends Stack {
     const api = new RestApi(this, 'SpacesApi');
     // And an API route, ie. a new path /spaces is added to the root of the API
     const spacesResource = api.root.addResource('spaces');
-    // Add GET and POST methods to the resource which are integrated with a Lambda function
+    // Add GET, PUT and POST methods to the resource which are integrated with a Lambda function
     spacesResource.addMethod('GET', props.lambdaIntegration);
     spacesResource.addMethod('POST', props.lambdaIntegration);
+    spacesResource.addMethod('PUT', props.lambdaIntegration);
   }
 }

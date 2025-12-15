@@ -12,7 +12,6 @@ interface LambdaStackProps extends StackProps {
 }
 
 export class LambdaStack extends Stack {
-
   public readonly lambdaIntegration: LambdaIntegration;
 
   constructor(scope: Construct, id: string, props: LambdaStackProps) {
@@ -26,11 +25,13 @@ export class LambdaStack extends Stack {
       },
     });
 
-    spacesLambda.addToRolePolicy(new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ['dynamodb:PutItem', 'dynamodb:GetItem', 'dynamodb:Scan'],
-      resources: [props.spacesTable.tableArn],
-    }));
+    spacesLambda.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:GetItem', 'dynamodb:Scan'],
+        resources: [props.spacesTable.tableArn],
+      })
+    );
 
     // Wrap the lambda so API Gateway knows how to call it
     this.lambdaIntegration = new LambdaIntegration(spacesLambda);

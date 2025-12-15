@@ -7,6 +7,7 @@ import {
 import { postSpaces } from "./postSpaces";
 import { getSpaces } from "./getSpaces";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { putSpaces } from "./putSpaces";
 
 // The DB client is a module-level variable. It lives in the execution evironment, outside the handler.
 // It is intialised on a cold start, and persists across warm starts.
@@ -22,6 +23,8 @@ export async function handler(
         return postSpaces(event, dbDocumentClient);
       case "GET":
         return getSpaces(event, dbDocumentClient);
+      case "PUT":
+        return putSpaces(event, dbDocumentClient);
       default:
         return {
           statusCode: 400,

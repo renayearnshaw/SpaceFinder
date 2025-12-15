@@ -8,13 +8,16 @@ process.env.TABLE_NAME = "SpaceTable-06b6e52d7889";
 // Run the lambda function locally so that we can debug it
 handler(
   {
-    httpMethod: "GET",
+    httpMethod: "PUT",
     // body: JSON.stringify({
     //   location: "Birmingham",
     // }),
     queryStringParameters: {
-      id: "28b96b86-7147-460c-9e51-c643d21b7d7b",
+      id: "a6cb3169-3dfb-45fa-8443-f55888776701",
     },
+    body: JSON.stringify({
+      location: "Somewhere new and exciting",
+    }),
   } as any,
   {} as any
 );

@@ -1,0 +1,10 @@
+{
+  "editor.smartQuotes": false,
+  "editor.autoClosingQuotes": "always",
+  "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+
