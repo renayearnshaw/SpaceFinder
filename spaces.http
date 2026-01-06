@@ -3,14 +3,14 @@
 GET {{baseUrl}}/spaces
 ###
 
-GET {{baseUrl}}/spaces?id=28b96b86-7147-460c-9e51-c643d21b7d7b
+GET {{baseUrl}}/spaces?id=d07663b0-cd76-4fcb-aad9-1c477bdf6633
 ###
 
 POST {{baseUrl}}/spaces
 content-Type: application/json
 
 {
-    "location": "Manchester"
+    "location": "London"
 }
 ###
 
@@ -20,4 +20,7 @@ content-Type: application/json
 {
     "location": "Skipton"
 }
+###
+
+DELETE {{baseUrl}}/spaces?id=2950f524-0feb-4e49-b4cc-943e458144ec
 ###
