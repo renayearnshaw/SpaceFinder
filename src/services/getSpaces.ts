@@ -1,9 +1,5 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  ScanCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { DynamoDBDocumentClient, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
 export async function getSpaces(
   event: APIGatewayProxyEvent,
@@ -35,7 +31,7 @@ export async function getSpaces(
       } else {
         return {
           statusCode: 400,
-          body: JSON.stringify({ message: "id is required" }),
+          body: JSON.stringify({ message: 'id is required' }),
         };
       }
     }
@@ -53,9 +49,7 @@ export async function getSpaces(
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify(
-        error instanceof Error ? error.message : "Internal server error"
-      ),
+      body: JSON.stringify(error instanceof Error ? error.message : 'Internal server error'),
     };
   }
 }

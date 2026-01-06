@@ -7,8 +7,8 @@ interface ApiStackProps extends StackProps {
 }
 
 export class ApiStack extends Stack {
-    constructor(scope: Construct, id: string, props: ApiStackProps) {
-      super(scope, id, props);
+  constructor(scope: Construct, id: string, props: ApiStackProps) {
+    super(scope, id, props);
 
     // Create the API Gateway REST API
     const api = new RestApi(this, 'SpacesApi');

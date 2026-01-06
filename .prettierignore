@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+cdk.out/
+*.js
+*.d.ts
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Config files that shouldn't be formatted
+package-lock.json
+
+
+

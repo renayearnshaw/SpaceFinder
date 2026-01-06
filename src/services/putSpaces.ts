@@ -1,5 +1,5 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
 export async function putSpaces(
   event: APIGatewayProxyEvent,
@@ -14,14 +14,14 @@ export async function putSpaces(
           const command = new UpdateCommand({
             TableName: process.env.TABLE_NAME,
             Key: { id },
-            UpdateExpression: "SET #loc = :loc",
+            UpdateExpression: 'SET #loc = :loc',
             ExpressionAttributeNames: {
-              "#loc": "location",
+              '#loc': 'location',
             },
             ExpressionAttributeValues: {
-              ":loc": newLocation,
+              ':loc': newLocation,
             },
-            ReturnValues: "ALL_NEW",
+            ReturnValues: 'ALL_NEW',
           });
 
           const result = await dbDocumentClient.send(command);
@@ -33,20 +33,20 @@ export async function putSpaces(
         } else {
           return {
             statusCode: 400,
-            body: JSON.stringify({ message: "body is required" }),
+            body: JSON.stringify({ message: 'body is required' }),
           };
         }
       } else {
         return {
           statusCode: 400,
-          body: JSON.stringify({ message: "id is required" }),
+          body: JSON.stringify({ message: 'id is required' }),
         };
       }
     } else {
       return {
         statusCode: 400,
         body: JSON.stringify({
-          message: "query string parameters are required",
+          message: 'query string parameters are required',
         }),
       };
     }
@@ -54,9 +54,7 @@ export async function putSpaces(
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify(
-        error instanceof Error ? error.message : "Internal server error"
-      ),
+      body: JSON.stringify(error instanceof Error ? error.message : 'Internal server error'),
     };
   }
 }
