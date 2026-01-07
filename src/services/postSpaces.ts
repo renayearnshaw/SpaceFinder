@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { randomUUID } from 'crypto';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { validateSpace } from './utils/utils';
+import { JsonError, parseJSON, validateSpace } from './utils/utils';
 import { Space } from './model/Space';
 
 export async function postSpaces(
@@ -9,7 +9,7 @@ export async function postSpaces(
   dbDocumentClient: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> {
   try {
-    const item = JSON.parse(event.body!) as Space;
+    const item = parseJSON(event.body!) as Space;
     item.id = randomUUID();
 
     // Validate that the item contains all required fields
@@ -31,10 +31,15 @@ export async function postSpaces(
       body: JSON.stringify(item),
     };
   } catch (error) {
-    console.error(error);
+    if (error instanceof JsonError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: error.message }),
+      };
+    }
     return {
       statusCode: 500,
-      body: JSON.stringify(error instanceof Error ? error.message : 'Internal server error'),
+      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
     };
   }
 }

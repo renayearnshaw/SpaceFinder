@@ -48,7 +48,7 @@ export async function deleteSpaces(
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify(error instanceof Error ? error.message : 'Internal server error'),
+      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
     };
   }
 }

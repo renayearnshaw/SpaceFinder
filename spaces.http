@@ -19,9 +19,9 @@ PUT {{baseUrl}}/spaces?id=8e2cc9c7-36d6-4b59-a398-4de9c92671c1
 content-Type: application/json
 
 {
-    "location": "Palma"
+    "location": "Palma de Mallorca"
 }
 ###
 
-DELETE {{baseUrl}}/spaces?id=b4063c4e-9478-4b08-b3f4-50df14bec6e2
+DELETE {{baseUrl}}/spaces?id=e2b8f8a5-be5e-49ff-8da4-cba726bcbbee
 ###

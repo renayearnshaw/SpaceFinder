@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { JsonError, parseJSON } from './utils/utils';
 
 export async function putSpaces(
   event: APIGatewayProxyEvent,
@@ -10,7 +11,13 @@ export async function putSpaces(
       const id = event.queryStringParameters.id;
       if (id) {
         if (event.body) {
-          const newLocation = JSON.parse(event.body).location;
+          const newLocation = parseJSON(event.body).location as string;
+          if (!newLocation) {
+            return {
+              statusCode: 400,
+              body: JSON.stringify({ message: 'location is required' }),
+            };
+          }
           const command = new UpdateCommand({
             TableName: process.env.TABLE_NAME,
             Key: { id },
@@ -51,10 +58,15 @@ export async function putSpaces(
       };
     }
   } catch (error) {
-    console.error(error);
+    if (error instanceof JsonError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: error.message }),
+      };
+    }
     return {
       statusCode: 500,
-      body: JSON.stringify(error instanceof Error ? error.message : 'Internal server error'),
+      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
     };
   }
 }
