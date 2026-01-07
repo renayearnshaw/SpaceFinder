@@ -15,11 +15,10 @@ export async function postSpaces(
       TableName: process.env.TABLE_NAME,
       Item: item,
     });
-    const result = await dbDocumentClient.send(command);
-    console.log(result);
+    await dbDocumentClient.send(command);
     return {
       statusCode: 201,
-      body: JSON.stringify({ id: randomId }),
+      body: JSON.stringify(item),
     };
   } catch (error) {
     console.error(error);
