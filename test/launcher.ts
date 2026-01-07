@@ -10,7 +10,8 @@ handler(
   {
     httpMethod: 'POST',
     body: JSON.stringify({
-      location: 'Birmingham',
+      location: 'Leeds',
+      // name: 'MyHomeTown',
     }),
     // queryStringParameters: {
     //   id: '306d6f39-769a-4b29-8a86-e98c00d2b481',

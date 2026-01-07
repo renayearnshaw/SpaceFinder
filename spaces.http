@@ -10,17 +10,18 @@ POST {{baseUrl}}/spaces
 content-Type: application/json
 
 {
-    "location": "London"
+    "location": "Alicante",
+    "name": "MyNextHoliday"
 }
 ###
 
-PUT {{baseUrl}}/spaces?id=28b96b86-7147-460c-9e51-c643d21b7d7b
+PUT {{baseUrl}}/spaces?id=8e2cc9c7-36d6-4b59-a398-4de9c92671c1
 content-Type: application/json
 
 {
-    "location": "Skipton"
+    "location": "Palma"
 }
 ###
 
-DELETE {{baseUrl}}/spaces?id=2950f524-0feb-4e49-b4cc-943e458144ec
+DELETE {{baseUrl}}/spaces?id=b4063c4e-9478-4b08-b3f4-50df14bec6e2
 ###
