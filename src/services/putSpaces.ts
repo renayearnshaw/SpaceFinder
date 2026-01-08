@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { JsonError, parseJSON } from './utils/utils';
+import { JsonError, parseJSON, validateSpace } from './utils/utils';
+import { Space } from './model/Space';
 
 export async function putSpaces(
   event: APIGatewayProxyEvent,
@@ -11,28 +12,45 @@ export async function putSpaces(
       const id = event.queryStringParameters.id;
       if (id) {
         if (event.body) {
-          const newLocation = parseJSON(event.body).location as string;
-          if (!newLocation) {
+          const item = parseJSON(event.body!) as Space;
+          item.id = id;
+
+          // Validate that the item contains all required fields
+          const validationResult = validateSpace(item);
+          if (!validationResult.success) {
             return {
               statusCode: 400,
-              body: JSON.stringify({ message: 'location is required' }),
+              body: JSON.stringify({ message: validationResult.error.message }),
             };
           }
+
+          // Build update expression dynamically to handle optional photoUrl
+          const updateExpressions: string[] = ['#loc = :loc', '#name = :name'];
+          const expressionAttributeNames: Record<string, string> = {
+            '#loc': 'location',
+            '#name': 'name',
+          };
+          const expressionAttributeValues: Record<string, string> = {
+            ':loc': item.location,
+            ':name': item.name,
+          };
+
+          if (item.photoUrl !== undefined) {
+            updateExpressions.push('#photoUrl = :photoUrl');
+            expressionAttributeNames['#photoUrl'] = 'photoUrl';
+            expressionAttributeValues[':photoUrl'] = item.photoUrl;
+          }
+
           const command = new UpdateCommand({
             TableName: process.env.TABLE_NAME,
             Key: { id },
-            UpdateExpression: 'SET #loc = :loc',
-            ExpressionAttributeNames: {
-              '#loc': 'location',
-            },
-            ExpressionAttributeValues: {
-              ':loc': newLocation,
-            },
+            UpdateExpression: `SET ${updateExpressions.join(', ')}`,
+            ExpressionAttributeNames: expressionAttributeNames,
+            ExpressionAttributeValues: expressionAttributeValues,
             ReturnValues: 'ALL_NEW',
           });
 
           const result = await dbDocumentClient.send(command);
-          console.log(result.Attributes);
           return {
             statusCode: 200,
             body: JSON.stringify(result.Attributes),
@@ -66,7 +84,9 @@ export async function putSpaces(
     }
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
+      body: JSON.stringify({
+        message: error instanceof Error ? error.message : 'Internal server error',
+      }),
     };
   }
 }

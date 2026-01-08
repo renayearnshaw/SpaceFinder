@@ -15,13 +15,15 @@ content-Type: application/json
 }
 ###
 
-PUT {{baseUrl}}/spaces?id=8e2cc9c7-36d6-4b59-a398-4de9c92671c1
+PUT {{baseUrl}}/spaces?id=9db81d90-9fe9-4cf0-a93c-91e4eff929eb
 content-Type: application/json
 
 {
-    "location": "Palma de Mallorca"
+    "location": "Alicante",
+    "name": "MyNextHoliday",
+    "photoUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 }
 ###
 
-DELETE {{baseUrl}}/spaces?id=e2b8f8a5-be5e-49ff-8da4-cba726bcbbee
+DELETE {{baseUrl}}/spaces?id=9db81d90-9fe9-4cf0-a93c-91e4eff929eb
 ###

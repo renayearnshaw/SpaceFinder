@@ -3,14 +3,14 @@ This project contains code I wrote while following the [AWS & Typescript Masterc
 
 ### Description
 This is a project for CDK development with TypeScript.
+It provides a CRUD interface to a DynamoDB database via API Gateway endpoints.
+It creates three stacks: one each for the database, API and lambda resources.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Useful commands
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
 * `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+* `npx ts-node test/launcher.ts`   to run the application
+* `cdk deploy --all`  deploy the stacks to your default AWS account/region
+* `cdk synth`   emits the synthesized CloudFormation template
