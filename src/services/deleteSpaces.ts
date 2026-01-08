@@ -1,8 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import {
-  DeleteCommand,
-  DynamoDBDocumentClient
-} from '@aws-sdk/lib-dynamodb';
+import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 export async function deleteSpaces(
   event: APIGatewayProxyEvent,
@@ -48,7 +45,9 @@ export async function deleteSpaces(
     console.error(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
+      body: JSON.stringify({
+        message: error instanceof Error ? error.message : 'Internal server error',
+      }),
     };
   }
 }

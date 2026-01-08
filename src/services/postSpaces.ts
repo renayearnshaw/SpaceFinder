@@ -39,7 +39,9 @@ export async function postSpaces(
     }
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error instanceof Error ? error.message : 'Internal server error'}),
+      body: JSON.stringify({
+        message: error instanceof Error ? error.message : 'Internal server error',
+      }),
     };
   }
 }

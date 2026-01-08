@@ -11,6 +11,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## Useful commands
 
 * `npm run test`    perform the jest unit tests
+* `npm run format:check`    performs Prettier format checks on source files
+* `npm run format`    performs Prettier formatting on source files
 * `npx ts-node test/launcher.ts`   to run the application
 * `cdk deploy --all`  deploy the stacks to your default AWS account/region
 * `cdk synth`   emits the synthesized CloudFormation template
