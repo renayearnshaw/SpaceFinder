@@ -1,4 +1,5 @@
 import { Fn, Stack } from 'aws-cdk-lib';
+import { APIGatewayProxyEvent } from 'aws-lambda';
 
 // Uses CloudFormation intrinsic functions to extract a unique suffix from the stack id of a CloudFormation stack
 // Example stack id: arn:aws:cloudformation:us-east-1:123456789012:stack/MyStackName/abcd1234-de56-7890-fgh1-23456789ijkl
@@ -10,4 +11,12 @@ export function getSuffixFromStack(stack: Stack) {
   // Select the 4th element of the array split by '-', which is the suffix
   const suffix = Fn.select(4, Fn.split('-', shortStackId));
   return suffix;
+}
+
+export function isAdmin(event: APIGatewayProxyEvent) {
+  const groups = event.requestContext.authorizer?.claims['cognito:groups'];
+  if (groups) {
+    return (groups as string).includes('admins');
+  }
+  return false;
 }

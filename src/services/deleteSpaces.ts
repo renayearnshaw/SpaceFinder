@@ -1,10 +1,19 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { isAdmin } from '../infra/utils/utils';
 
 export async function deleteSpaces(
   event: APIGatewayProxyEvent,
   dbDocumentClient: DynamoDBDocumentClient
 ): Promise<APIGatewayProxyResult> {
+  
+  if (!isAdmin(event)) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ message: 'Unauthorized - you must be an admin to delete a space' }),
+    };
+  }
+
   try {
     if (event.queryStringParameters) {
       const id = event.queryStringParameters.id;

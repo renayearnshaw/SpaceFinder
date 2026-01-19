@@ -15,6 +15,7 @@ export async function handler(
   context: Context
 ): Promise<APIGatewayProxyResult> {
   try {
+    console.log(event);
     switch (event.httpMethod) {
       case 'POST':
         return postSpaces(event, dbDocumentClient);
