@@ -1,6 +1,11 @@
 import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
 import { CfnUserPoolGroup, UserPool, UserPoolClient } from 'aws-cdk-lib/aws-cognito';
-import { IdentityPool, UserPoolAuthenticationProvider } from 'aws-cdk-lib/aws-cognito-identitypool';
+import {
+  IdentityPool,
+  IdentityPoolProviderUrl,
+  UserPoolAuthenticationProvider,
+} from 'aws-cdk-lib/aws-cognito-identitypool';
+import { CfnRole, Effect, FederatedPrincipal, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 
 export class AuthStack extends Stack {
@@ -13,7 +18,7 @@ export class AuthStack extends Stack {
     this.createUserPool();
     this.createUserPoolClient();
     this.createAdminsGroup();
-    this.createIdentityPool();
+    this.createIdentityPoolWithRoles();
   }
 
   private createUserPool() {
@@ -49,8 +54,19 @@ export class AuthStack extends Stack {
     });
   }
 
-  private createIdentityPool() {
-    // Create an Identity Pool with two default roles: unauthenticated and authenticated
+  private createIdentityPoolWithRoles() {
+    // Create an admin role with a generic principal, without conditions.
+    // We'll lock it down when we have the identity pool id.
+    const adminRole = new Role(this, 'CognitoSpaceAdminRole', {
+      assumedBy: new FederatedPrincipal(
+        'cognito-identity.amazonaws.com',
+        {}, // Empty conditions for now
+        'sts:AssumeRoleWithWebIdentity'
+      ),
+    });
+
+    // Create an Identity Pool with two default roles (unauthenticated and authenticated)
+    // and an admin role mapped to the admins group.
     this.identityPool = new IdentityPool(this, 'SpaceIdentityPool', {
       identityPoolName: 'SpaceIdentityPool',
       allowUnauthenticatedIdentities: true, // Optional: default is false
@@ -62,6 +78,42 @@ export class AuthStack extends Stack {
           }),
         ],
       },
+      // If the user is in the user pool's 'admins' group, they will be mapped to the admin role.
+      roleMappings: [
+        {
+          // CloudFormation keys must be static strings and available at compile time
+          mappingKey: 'adminsMapping',
+          providerUrl: IdentityPoolProviderUrl.userPool(this.userPool, this.userPoolClient),
+          rules: [
+            {
+              claim: 'cognito:groups',
+              claimValue: 'admins',
+              mappedRole: adminRole,
+            },
+          ],
+        },
+      ],
     });
+
+    // After the identityPool is created, we overwrite the role's trust policy
+    // using the actual identityPoolId.
+    if (adminRole.assumeRolePolicy) {
+      (adminRole.node.defaultChild as CfnRole).assumeRolePolicyDocument = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { Federated: 'cognito-identity.amazonaws.com' },
+            Action: 'sts:AssumeRoleWithWebIdentity',
+            Condition: {
+              StringEquals: {
+                'cognito-identity.amazonaws.com:aud': this.identityPool.identityPoolId,
+              },
+              'ForAnyValue:StringLike': { 'cognito-identity.amazonaws.com:amr': 'authenticated' },
+            },
+          },
+        ],
+      };
+    }
   }
 }
