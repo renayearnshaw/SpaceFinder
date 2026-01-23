@@ -3,6 +3,7 @@ import { CfnUserPoolGroup, UserPool, UserPoolClient } from 'aws-cdk-lib/aws-cogn
 import {
   IdentityPool,
   IdentityPoolProviderUrl,
+  RoleMappingMatchType,
   UserPoolAuthenticationProvider,
 } from 'aws-cdk-lib/aws-cognito-identitypool';
 import { CfnRole, Effect, FederatedPrincipal, PolicyStatement, Role } from 'aws-cdk-lib/aws-iam';
@@ -88,6 +89,8 @@ export class AuthStack extends Stack {
             {
               claim: 'cognito:groups',
               claimValue: 'admins',
+              // Use CONTAINS to handle the ["admins"] array format
+              matchType: RoleMappingMatchType.CONTAINS,
               mappedRole: adminRole,
             },
           ],
@@ -115,5 +118,14 @@ export class AuthStack extends Stack {
         ],
       };
     }
+
+    // Add an inline policy to the admin role to allow listing all S3 buckets
+    adminRole.addToPolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['s3:ListAllMyBuckets'],
+        resources: ['*'],
+      })
+    );
   }
 }
