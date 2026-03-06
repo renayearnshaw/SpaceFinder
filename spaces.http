@@ -1,0 +1,35 @@
+@baseUrl = https://<your-api-id>.execute-api.eu-west-1.amazonaws.com/prod
+@token = <your-token>
+
+GET {{baseUrl}}/spaces
+Authorization: {{token}}
+###
+
+GET {{baseUrl}}/spaces?id=a7e60a26-82ed-4dac-b10a-2474b3c1cb28
+Authorization: {{token}}
+###
+
+POST {{baseUrl}}/spaces
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "location": "Venice",
+    "name": "AReallyCoolHoliday"
+}
+###
+
+PUT {{baseUrl}}/spaces?id=31dfbb4b-1677-4f61-a7e1-cb0564e4d88b
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "location": "Venice",
+    "name": "OneOfMyFavourites",
+    "photoUrl": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+}
+###
+
+DELETE {{baseUrl}}/spaces?id=31dfbb4b-1677-4f61-a7e1-cb0564e4d88b
+Authorization: {{token}}
+###
